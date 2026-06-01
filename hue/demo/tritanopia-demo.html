@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tritanopia Demo — Reduced Blue Sensitivity</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #ffffff; color: #1a1a1a; padding: 32px; }
+
+    .page-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .page-subtitle {
+      font-size: 14px; color: #555; margin-bottom: 36px;
+      padding: 10px 14px; background: #f5f5f5; border-radius: 8px; display: inline-block;
+    }
+
+    .section { margin-bottom: 36px; }
+    .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 14px; }
+
+    /* Navigation */
+    nav {
+      background: #FFFF00; padding: 14px 20px; border-radius: 10px;
+      display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+    }
+    nav .nav-brand { font-size: 16px; font-weight: 800; color: #333; margin-right: 12px; }
+    nav a {
+      color: #0000EE; font-size: 14px; font-weight: 600; text-decoration: underline; cursor: pointer;
+    }
+
+    /* Info banner */
+    .info-banner {
+      background: #FFFACD; border-radius: 10px; padding: 16px 20px;
+    }
+    .info-banner p { color: #1E90FF; font-size: 15px; font-weight: 600; line-height: 1.5; }
+    .info-banner .info-sub { color: #1E90FF; font-size: 13px; font-weight: 400; opacity: 0.85; margin-top: 4px; }
+
+    /* Chart */
+    .chart-wrap { display: flex; flex-direction: column; gap: 12px; }
+    .chart-legend { display: flex; gap: 20px; align-items: center; }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+    .legend-dot { width: 14px; height: 14px; border-radius: 50%; }
+    .legend-dot.blue { background: #4169E1; }
+    .legend-dot.yellow { background: #FFD700; }
+    .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+    .bar-group { display: flex; gap: 4px; align-items: flex-end; }
+    .bar { width: 28px; border-radius: 4px 4px 0 0; }
+    .bar.blue { background: #4169E1; }
+    .bar.yellow { background: #FFD700; }
+    .bar-label { font-size: 11px; color: #666; text-align: center; margin-top: 4px; }
+    .bar-col { display: flex; flex-direction: column; align-items: center; }
+
+    /* Swatches */
+    .swatch-row { display: flex; gap: 20px; flex-wrap: wrap; }
+    .swatch-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .swatch {
+      width: 72px; height: 72px; border-radius: 12px;
+      border: 1px solid rgba(0,0,0,0.12);
+    }
+    .swatch.sky { background: #87CEEB; }
+    .swatch.green { background: #90EE90; }
+    .swatch-name { font-size: 12px; font-weight: 600; color: #333; }
+    .swatch-hex { font-size: 11px; color: #888; font-family: monospace; }
+
+    .note {
+      margin-top: 40px; padding: 14px 18px; background: #f0f0f0; border-radius: 8px;
+      font-size: 13px; color: #555; line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">Tritanopia Demo — Reduced Blue Sensitivity</h1>
+  <div class="page-subtitle">Failing pairs under tritanopia: Blue #0000EE on Yellow #FFD700, and #0000EE on white #FFFFFF</div>
+
+  <div class="section">
+    <div class="section-title">Navigation Bar (Blue links on Yellow)</div>
+    <nav>
+      <span class="nav-brand">MyApp</span>
+      <a>Dashboard</a>
+      <a>Analytics</a>
+      <a>Settings</a>
+      <a>Help &amp; Support</a>
+      <a>Sign out</a>
+    </nav>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Information Banner (Blue text on Light Yellow)</div>
+    <div class="info-banner">
+      <p>Scheduled maintenance on June 15 — services may be temporarily unavailable.</p>
+      <div class="info-sub">The maintenance window runs from 02:00 to 04:00 UTC. No data will be lost.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Quarterly Performance Chart (Blue vs. Yellow series)</div>
+    <div class="chart-wrap">
+      <div class="chart-legend">
+        <div class="legend-item"><div class="legend-dot blue"></div> Actual</div>
+        <div class="legend-item"><div class="legend-dot yellow"></div> Target</div>
+      </div>
+      <div class="chart-bars">
+        <div class="bar-col">
+          <div class="bar-group">
+            <div class="bar blue" style="height:70px"></div>
+            <div class="bar yellow" style="height:85px"></div>
+          </div>
+          <div class="bar-label">Q1</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-group">
+            <div class="bar blue" style="height:90px"></div>
+            <div class="bar yellow" style="height:85px"></div>
+          </div>
+          <div class="bar-label">Q2</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-group">
+            <div class="bar blue" style="height:75px"></div>
+            <div class="bar yellow" style="height:100px"></div>
+          </div>
+          <div class="bar-label">Q3</div>
+        </div>
+        <div class="bar-col">
+          <div class="bar-group">
+            <div class="bar blue" style="height:110px"></div>
+            <div class="bar yellow" style="height:95px"></div>
+          </div>
+          <div class="bar-label">Q4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Color Swatches — Sky Blue vs. Light Green (appear identical under tritanopia)</div>
+    <div class="swatch-row">
+      <div class="swatch-item">
+        <div class="swatch sky"></div>
+        <div class="swatch-name">Sky Blue</div>
+        <div class="swatch-hex">#87CEEB</div>
+      </div>
+      <div class="swatch-item">
+        <div class="swatch green"></div>
+        <div class="swatch-name">Light Green</div>
+        <div class="swatch-hex">#90EE90</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    Under tritanopia (missing S-cones), blue (#0000EE, #1E90FF, #4169E1) and yellow (#FFFF00, #FFD700) appear as very similar hues, and sky blue (#87CEEB) becomes nearly indistinguishable from light green (#90EE90). Enable the Hue extension and select "Tritanopia" to see corrected colors.
+  </div>
+
+</body>
+</html>

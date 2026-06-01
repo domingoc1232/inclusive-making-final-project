@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hue</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div class="popup theme-light" id="popup" data-on="false">
+
+  <div class="pop-head">
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    </span>
+    <span class="brand-text">
+      <span class="brand-name">Hue</span>
+      <span class="brand-sub">Color vision correction</span>
+    </span>
+    <span class="head-spacer"></span>
+    <button class="icon-btn" id="theme-btn" aria-label="Switch to dark mode"></button>
+  </div>
+
+  <div class="toggle-row">
+    <span class="tr-text">
+      <div class="tr-title">Correction</div>
+      <div class="tr-state" id="tr-state">Paused on this page</div>
+    </span>
+    <button role="switch" aria-checked="false" aria-label="Toggle color correction"
+            class="switch" data-on="false" id="correction-switch">
+      <span class="switch-word on">ON</span>
+      <span class="switch-word off">OFF</span>
+      <span class="switch-knob" id="switch-knob"></span>
+    </button>
+  </div>
+
+  <div class="divider"></div>
+  <div class="sec-label" style="margin-top:16px">Vision type</div>
+
+  <div class="type-list" id="type-list" role="radiogroup" aria-label="Vision type"></div>
+
+  <div class="summary">
+    <span class="summary-dot"></span>
+    <span class="summary-text summary-fig" id="summary-text">Correction paused — page shown unmodified</span>
+  </div>
+
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
