@@ -3,143 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Protanopia Demo — Reduced Red Sensitivity</title>
+  <title>Protanopia Demo</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #ffffff; color: #1a1a1a; padding: 32px; }
 
-    .page-title {
-      font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #1a1a1a;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 40px 20px;
     }
-    .page-subtitle {
-      font-size: 14px; color: #555; margin-bottom: 36px;
-      padding: 10px 14px; background: #f5f5f5; border-radius: 8px; display: inline-block;
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
     }
 
-    .section { margin-bottom: 36px; }
-    .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 14px; }
-
-    /* System Status */
-    .status-grid { display: flex; gap: 16px; flex-wrap: wrap; }
-    .status-item {
-      padding: 14px 20px; border-radius: 10px; font-weight: 600; font-size: 15px;
-      min-width: 140px; text-align: center;
+    .alert-card {
+      background: #CC0000;
+      color: #ffffff;
+      padding: 24px 40px;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
-    .status-online { background: #00AA00; color: #ffffff; }
-    .status-offline { background: #CC0000; color: #ffffff; }
-    .status-label { font-size: 11px; font-weight: 500; opacity: 0.85; margin-top: 2px; }
 
-    /* Bar chart legend */
-    .chart-legend { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
-    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
-    .legend-bar { width: 32px; height: 16px; border-radius: 3px; }
-    .legend-bar.red { background: #CC0000; }
-    .legend-bar.green { background: #00AA00; }
-    .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; margin-top: 14px; }
-    .bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-    .bar { width: 36px; border-radius: 4px 4px 0 0; }
-    .bar.red { background: #CC0000; }
-    .bar.green { background: #00AA00; }
-    .bar-label { font-size: 11px; color: #666; }
-
-    /* Alerts */
-    .alert-stack { display: flex; flex-direction: column; gap: 10px; }
-    .alert {
-      padding: 14px 18px; border-radius: 10px; font-size: 14px; font-weight: 600;
-    }
-    .alert-error { background: #CC0000; color: #ffffff; }
-    .alert-success { background: #00AA00; color: #ffffff; }
-    .alert-body { font-size: 13px; font-weight: 400; margin-top: 2px; opacity: 0.9; }
-
-    /* Buttons */
-    .btn-row { display: flex; gap: 12px; }
-    .btn {
-      padding: 12px 28px; border: none; border-radius: 8px; font-size: 15px;
-      font-weight: 600; cursor: pointer; color: #ffffff;
-    }
-    .btn-delete { background: #CC0000; }
-    .btn-confirm { background: #00AA00; }
-
-    .note {
-      margin-top: 40px; padding: 14px 18px; background: #f0f0f0; border-radius: 8px;
-      font-size: 13px; color: #555; line-height: 1.5;
+    .hint {
+      font-size: 13px;
+      color: #777;
+      max-width: 340px;
+      text-align: center;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
+  <p class="eyebrow">Protanopia Demo &mdash; Reduced Red Sensitivity</p>
 
-  <h1 class="page-title">Protanopia Demo — Reduced Red Sensitivity</h1>
-  <div class="page-subtitle">Colors below are indistinguishable under protanopia: Red #CC0000 &amp; Green #00AA00 on white #FFFFFF</div>
+  <div class="alert-card">&#x26A0; Service Unavailable</div>
 
-  <div class="section">
-    <div class="section-title">System Status</div>
-    <div class="status-grid">
-      <div class="status-item status-online">
-        server-01
-        <div class="status-label">Online</div>
-      </div>
-      <div class="status-item status-online">
-        server-02
-        <div class="status-label">Online</div>
-      </div>
-      <div class="status-item status-offline">
-        server-03
-        <div class="status-label">Offline</div>
-      </div>
-      <div class="status-item status-online">
-        server-04
-        <div class="status-label">Online</div>
-      </div>
-      <div class="status-item status-offline">
-        server-05
-        <div class="status-label">Offline</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Monthly Revenue vs. Expenses</div>
-    <div class="chart-legend">
-      <div class="legend-item"><div class="legend-bar red"></div> Revenue</div>
-      <div class="legend-item"><div class="legend-bar green"></div> Expenses</div>
-    </div>
-    <div class="chart-bars">
-      <div class="bar-wrap"><div class="bar red" style="height:80px"></div><div class="bar-label">Jan</div></div>
-      <div class="bar-wrap"><div class="bar green" style="height:55px"></div><div class="bar-label">Jan</div></div>
-      <div class="bar-wrap"><div class="bar red" style="height:95px"></div><div class="bar-label">Feb</div></div>
-      <div class="bar-wrap"><div class="bar green" style="height:70px"></div><div class="bar-label">Feb</div></div>
-      <div class="bar-wrap"><div class="bar red" style="height:75px"></div><div class="bar-label">Mar</div></div>
-      <div class="bar-wrap"><div class="bar green" style="height:90px"></div><div class="bar-label">Mar</div></div>
-      <div class="bar-wrap"><div class="bar red" style="height:110px"></div><div class="bar-label">Apr</div></div>
-      <div class="bar-wrap"><div class="bar green" style="height:60px"></div><div class="bar-label">Apr</div></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Alerts</div>
-    <div class="alert-stack">
-      <div class="alert alert-error">
-        Error: Payment failed
-        <div class="alert-body">Transaction #4821 could not be processed. Please check your billing details.</div>
-      </div>
-      <div class="alert alert-success">
-        Success: Order confirmed
-        <div class="alert-body">Order #8834 has been placed and is being prepared for shipment.</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Actions</div>
-    <div class="btn-row">
-      <button class="btn btn-delete">Delete Record</button>
-      <button class="btn btn-confirm">Confirm Changes</button>
-    </div>
-  </div>
-
-  <div class="note">
-    Under protanopia (missing L-cones), the red #CC0000 and green #00AA00 above appear as very similar brownish-yellow hues. Enable the Hue extension and select "Protanopia" to see the corrected colors.
-  </div>
-
+  <p class="hint">
+    This red alert has low contrast under protanopia simulation.<br>
+    Enable <strong>Hue &rarr; Protanopia</strong> to correct it.
+  </p>
 </body>
 </html>

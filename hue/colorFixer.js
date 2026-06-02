@@ -20,7 +20,10 @@
 
   function hslToHex(h, s, l) {
     const { rgbToHex } = self.colorUtils;
-    h /= 360;
+    h = ((h % 360) + 360) % 360;
+    s = Math.max(0, Math.min(1, s));
+    l = Math.max(0.10, Math.min(0.95, l));
+    const h1 = h / 360;
     let r, g, b;
     if (s === 0) {
       r = g = b = l;
@@ -35,49 +38,88 @@
       }
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
-      r = hue2rgb(p, q, h + 1 / 3);
-      g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1 / 3);
+      r = hue2rgb(p, q, h1 + 1 / 3);
+      g = hue2rgb(p, q, h1);
+      b = hue2rgb(p, q, h1 - 1 / 3);
     }
     return rgbToHex(Math.round(r * 255), Math.round(g * 255), Math.round(b * 255));
   }
 
-  function fixColor(fgHex, bgHex, type) {
-    const { hexToRgb, contrastRatio, relativeLuminance } = self.colorUtils;
-    const { simulateColor } = self.daltonize;
-    const { passesWCAG } = self.contrastChecker;
-
-    const fgRgb = hexToRgb(fgHex);
-    const bgRgb = hexToRgb(bgHex);
-
-    if (passesWCAG(fgRgb, bgRgb, type)) {
-      return { fg: fgHex, bg: bgHex };
-    }
-
-    const hsl = hexToHsl(fgHex);
-    let bestHex = fgHex;
-    let bestContrast = 0;
-
-    for (let i = 1; i <= 50; i++) {
-      const newL = Math.max(0, hsl.l - (i / 50) * hsl.l);
-      const candidate = hslToHex(hsl.h, hsl.s, newL);
-      const candRgb = hexToRgb(candidate);
-
-      if (passesWCAG(candRgb, bgRgb, type)) {
-        return { fg: candidate, bg: bgHex };
-      }
-
-      const simCand = simulateColor(candRgb, type);
-      const simBg = simulateColor(bgRgb, type);
-      const ratio = contrastRatio(relativeLuminance(simCand), relativeLuminance(simBg));
-      if (ratio > bestContrast) {
-        bestContrast = ratio;
-        bestHex = candidate;
-      }
-    }
-
-    return { fg: bestHex, bg: bgHex };
+  function simToHsl(rgb) {
+    return hexToHsl(self.colorUtils.rgbToHex(rgb.r, rgb.g, rgb.b));
   }
 
-  self.colorFixer = { fixColor };
+  function isConfusable(hexA, hexB, type) {
+    const { hexToRgb } = self.colorUtils;
+    const { simulateColor } = self.daltonize;
+
+    const hslA = simToHsl(simulateColor(hexToRgb(hexA), type));
+    const hslB = simToHsl(simulateColor(hexToRgb(hexB), type));
+
+    const hueDiff = Math.min(
+      Math.abs(hslA.h - hslB.h),
+      360 - Math.abs(hslA.h - hslB.h)
+    );
+    const lightDiff = Math.abs(hslA.l - hslB.l) * 100;
+
+    return hueDiff < 25 && lightDiff < 25;
+  }
+
+  function getHueShift(h, type) {
+    if (type === 'protanopia' || type === 'deuteranopia') {
+      if (h <= 30) return 30;
+      if (h <= 80) return 0;
+      if (h <= 165) return 60;
+      if (h <= 195) return 70;
+      return 0;
+    }
+    // tritanopia
+    if (h >= 40 && h <= 80) return -40;
+    if (h >= 81 && h <= 140) return 30;
+    if (h >= 190 && h <= 260) return 70;
+    if (h >= 261 && h <= 290) return 40;
+    return 0;
+  }
+
+  function fixColor(hexToFix, hexOther, type, role) {
+    const { hexToRgb, relativeLuminance, contrastRatio } = self.colorUtils;
+    const { passesWCAG } = self.contrastChecker;
+    const { simulateColor } = self.daltonize;
+
+    const fixRgb = hexToRgb(hexToFix);
+    const otherRgb = hexToRgb(hexOther);
+    const fgRgb = role === 'fg' ? fixRgb : otherRgb;
+    const bgRgb = role === 'fg' ? otherRgb : fixRgb;
+
+    if (passesWCAG(fgRgb, bgRgb, type)) return hexToFix;
+
+    const hsl = hexToHsl(hexToFix);
+    const simFixLum = relativeLuminance(simulateColor(fixRgb, type));
+    const simOtherLum = relativeLuminance(simulateColor(otherRgb, type));
+    const goDown = simFixLum < simOtherLum;
+
+    let l = hsl.l;
+    let best = hexToFix;
+    let bestContrast = 0;
+
+    for (let i = 0; i < 50; i++) {
+      l = goDown ? Math.max(0.01, l - 0.02) : Math.min(0.99, l + 0.02);
+      const candidate = hslToHex(hsl.h, hsl.s, l);
+      const candRgb = hexToRgb(candidate);
+      const fgR = role === 'fg' ? candRgb : otherRgb;
+      const bgR = role === 'fg' ? otherRgb : candRgb;
+
+      if (passesWCAG(fgR, bgR, type)) return candidate;
+
+      const cr = contrastRatio(
+        relativeLuminance(simulateColor(fgR, type)),
+        relativeLuminance(simulateColor(bgR, type))
+      );
+      if (cr > bestContrast) { bestContrast = cr; best = candidate; }
+    }
+
+    return best;
+  }
+
+  self.colorFixer = { isConfusable, fixColor, hexToHsl };
 })();

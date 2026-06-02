@@ -3,162 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deuteranopia Demo — Reduced Green Sensitivity</title>
+  <title>Deuteranopia Demo</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #ffffff; color: #1a1a1a; padding: 32px; }
 
-    .page-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-    .page-subtitle {
-      font-size: 14px; color: #555; margin-bottom: 36px;
-      padding: 10px 14px; background: #f5f5f5; border-radius: 8px; display: inline-block;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      background: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      padding: 40px 20px;
     }
 
-    .section { margin-bottom: 36px; }
-    .section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 14px; }
-
-    /* Form */
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 480px; }
-    .form-field { display: flex; flex-direction: column; gap: 5px; }
-    .form-label { font-size: 13px; font-weight: 600; color: #333; }
-    .form-input {
-      padding: 10px 12px; border-radius: 8px; font-size: 14px;
-      outline: none; background: #fff;
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #999;
     }
-    .form-input.valid { border: 2px solid #3DB53D; }
-    .form-input.invalid { border: 2px solid #D63B2F; }
-    .form-hint { font-size: 12px; font-weight: 500; }
-    .form-hint.valid { color: #3DB53D; }
-    .form-hint.invalid { color: #D63B2F; }
 
-    /* Traffic light */
-    .traffic-light {
-      display: inline-flex; flex-direction: column; gap: 10px;
-      background: #222; padding: 16px; border-radius: 16px;
+    .error-card {
+      background: #D63B2F;
+      color: #ffffff;
+      padding: 24px 40px;
+      border-radius: 14px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
     }
-    .light {
-      width: 52px; height: 52px; border-radius: 50%;
-    }
-    .light.red { background: #FF0000; }
-    .light.yellow { background: #FFCC00; }
-    .light.green { background: #00CC00; }
-    .light.off { opacity: 0.18; }
 
-    /* Data table */
-    table { border-collapse: collapse; width: 100%; max-width: 560px; }
-    th { padding: 10px 14px; font-size: 13px; font-weight: 700; text-align: left; background: #f5f5f5; border-bottom: 2px solid #e0e0e0; }
-    td { padding: 11px 14px; font-size: 14px; border-bottom: 1px solid #eee; }
-    tr.pass td { background: #3DB53D; color: #ffffff; }
-    tr.fail td { background: #D63B2F; color: #ffffff; }
-
-    /* Dark green text */
-    .text-samples { display: flex; flex-direction: column; gap: 10px; }
-    .text-dark-green { color: #006400; font-size: 15px; font-weight: 600; background: #ffffff; padding: 10px 14px; border-radius: 8px; border: 1px solid #e0e0e0; }
-
-    .note {
-      margin-top: 40px; padding: 14px 18px; background: #f0f0f0; border-radius: 8px;
-      font-size: 13px; color: #555; line-height: 1.5;
+    .hint {
+      font-size: 13px;
+      color: #777;
+      max-width: 340px;
+      text-align: center;
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
+  <p class="eyebrow">Deuteranopia Demo &mdash; Reduced Green Sensitivity</p>
 
-  <h1 class="page-title">Deuteranopia Demo — Reduced Green Sensitivity</h1>
-  <div class="page-subtitle">Failing pairs under deuteranopia: Red #D63B2F &amp; Green #3DB53D on white #FFFFFF</div>
+  <div class="error-card">&#x2717; Form Submission Failed</div>
 
-  <div class="section">
-    <div class="section-title">Registration Form</div>
-    <div class="form-grid">
-      <div class="form-field">
-        <label class="form-label">Email address</label>
-        <input class="form-input valid" type="email" value="user@example.com" readonly>
-        <span class="form-hint valid">Valid email format</span>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Username</label>
-        <input class="form-input invalid" type="text" value="us" readonly>
-        <span class="form-hint invalid">Too short — min 4 characters</span>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Password</label>
-        <input class="form-input valid" type="password" value="password123" readonly>
-        <span class="form-hint valid">Strong password</span>
-      </div>
-      <div class="form-field">
-        <label class="form-label">Phone number</label>
-        <input class="form-input invalid" type="tel" value="123" readonly>
-        <span class="form-hint invalid">Invalid phone number</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Traffic Light</div>
-    <div class="traffic-light">
-      <div class="light red off"></div>
-      <div class="light yellow off"></div>
-      <div class="light green"></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Test Results</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Test ID</th>
-          <th>Description</th>
-          <th>Score</th>
-          <th>Result</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="pass">
-          <td>T-001</td>
-          <td>Unit test: login flow</td>
-          <td>100%</td>
-          <td>Pass</td>
-        </tr>
-        <tr class="fail">
-          <td>T-002</td>
-          <td>Integration: payment API</td>
-          <td>42%</td>
-          <td>Fail</td>
-        </tr>
-        <tr class="pass">
-          <td>T-003</td>
-          <td>E2E: checkout flow</td>
-          <td>98%</td>
-          <td>Pass</td>
-        </tr>
-        <tr class="fail">
-          <td>T-004</td>
-          <td>Load test: 1000 users</td>
-          <td>61%</td>
-          <td>Fail</td>
-        </tr>
-        <tr class="pass">
-          <td>T-005</td>
-          <td>Security: XSS scan</td>
-          <td>100%</td>
-          <td>Pass</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="section">
-    <div class="section-title">Dark Green Text Labels on White (#006400 on #FFFFFF)</div>
-    <div class="text-samples">
-      <div class="text-dark-green">Active subscription — renews on July 15, 2026</div>
-      <div class="text-dark-green">All systems operational — last checked 2 minutes ago</div>
-      <div class="text-dark-green">Payment verified — transaction ID: #TX-88214</div>
-    </div>
-  </div>
-
-  <div class="note">
-    Under deuteranopia (missing M-cones), the red #D63B2F and green #3DB53D above appear nearly identical, and the dark green text (#006400) lacks sufficient contrast. Enable the Hue extension and select "Deuteranopia" to see corrected colors.
-  </div>
-
+  <p class="hint">
+    This red error card has low contrast under deuteranopia simulation.<br>
+    Enable <strong>Hue &rarr; Deuteranopia</strong> to correct it.
+  </p>
 </body>
 </html>

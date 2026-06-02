@@ -26,6 +26,18 @@
     return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
   }
 
+  function getMeaningCarrierRole(fgHex, bgHex) {
+    const { hexToHsl } = self.colorFixer;
+    const bgHsl = hexToHsl(bgHex);
+    if (bgHsl.s > 0.30) {
+      const fgHsl = hexToHsl(fgHex);
+      if (fgHsl.l > 0.85 || fgHsl.l < 0.15) {
+        return 'bg';
+      }
+    }
+    return 'fg';
+  }
+
   chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.action === 'scan') {
       const type = msg.type;
@@ -39,8 +51,6 @@
       let hueId = 0;
 
       for (const el of elements) {
-        if (!el.innerText || !el.innerText.trim()) continue;
-
         const style = window.getComputedStyle(el);
         const fgStr = style.color;
         let bgStr = style.backgroundColor;
@@ -53,17 +63,20 @@
         const bgRgb = parseRgb(bgStr);
         if (!fgRgb || !bgRgb) continue;
 
-        if (!self.contrastChecker.passesWCAG(fgRgb, bgRgb, type)) {
-          const fgHex = rgbToHex(fgRgb.r, fgRgb.g, fgRgb.b);
-          const bgHex = rgbToHex(bgRgb.r, bgRgb.g, bgRgb.b);
-          const fixed = self.colorFixer.fixColor(fgHex, bgHex, type);
+        const fgHex = rgbToHex(fgRgb.r, fgRgb.g, fgRgb.b);
+        const bgHex = rgbToHex(bgRgb.r, bgRgb.g, bgRgb.b);
 
-          if (fixed.fg !== fgHex) {
-            const id = hueId++;
-            el.setAttribute('hue-id', String(id));
-            rules.push('[hue-id="' + id + '"] { color: ' + fixed.fg + ' !important; }');
-          }
-        }
+        if (self.contrastChecker.passesWCAG(fgRgb, bgRgb, type)) continue;
+
+        const role = getMeaningCarrierRole(fgHex, bgHex);
+        const colorToFix = role === 'bg' ? bgHex : fgHex;
+        const otherColor = role === 'bg' ? fgHex : bgHex;
+        const fixed = self.colorFixer.fixColor(colorToFix, otherColor, type, role);
+
+        const id = hueId++;
+        el.setAttribute('hue-id', String(id));
+        const prop = role === 'bg' ? 'background-color' : 'color';
+        rules.push('[hue-id="' + id + '"] { ' + prop + ': ' + fixed + ' !important; }');
       }
 
       if (rules.length > 0) {
