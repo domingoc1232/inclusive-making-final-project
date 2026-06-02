@@ -62,7 +62,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--canvas, #e9edf3);
+  background: var(--surface);
 }
 
 .popup {
@@ -70,9 +70,6 @@ html, body {
   width: 360px;
   background: var(--surface);
   color: var(--text);
-  border-radius: var(--r-lg);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-pop);
   overflow: hidden;
   position: relative;
   -webkit-font-smoothing: antialiased;
