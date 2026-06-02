@@ -1,6 +1,6 @@
-# Hue — Color Vision Correction for the Web
+# Hue - Color Vision Correction for the Web
 
-Hue is a Chrome extension that makes websites more accessible for people with color vision deficiencies. It scans the active page, identifies text/background color pairs that fail WCAG AA contrast thresholds when viewed through a simulated color vision filter, and injects corrected foreground colors in real time. Supports protanopia (red-blind), deuteranopia (green-blind), and tritanopia (blue-blind) simulation using the Brettel/Viénot/Mollon 1997 matrices.
+Hue is a Chrome extension that makes websites more accessible for people with color vision deficiencies. It scans the active page, identifies text/background color pairs that fail WCAG AA contrast thresholds when viewed through a simulated color vision filter, and injects corrected colors in real time. Supports protanopia (red-blind), deuteranopia (green-blind), and tritanopia (blue-blind) simulation using the Brettel/Viénot/Mollon 1997 matrices.
 
 ---
 
@@ -17,9 +17,9 @@ Open any of the standalone demo pages directly in Chrome (File → Open, or drag
 
 | File | Demonstrates |
 |---|---|
-| `hue/demo/protanopia-demo.html` | Red #CC0000 vs green #00AA00 confusion |
-| `hue/demo/deuteranopia-demo.html` | Red #D63B2F vs green #3DB53D + dark green text |
-| `hue/demo/tritanopia-demo.html` | Blue/yellow confusion, sky blue vs light green swatches |
+| `hue/demo/protanopia-demo.html` | Red `#CC0000` alert with white text — bg darkens to pass contrast |
+| `hue/demo/deuteranopia-demo.html` | Red `#D63B2F` error card with white text — bg darkens to pass contrast |
+| `hue/demo/tritanopia-demo.html` | Blue `#0000EE` link on yellow `#FFFF00` — text darkens to pass contrast |
 
 For each demo page:
 
@@ -33,6 +33,6 @@ For each demo page:
 
 1. Navigate to any website
 2. Open the Hue popup, pick a vision type, and turn correction on
-3. The extension injects corrected text colors without altering backgrounds
+3. The extension injects corrected colors — it adjusts the background when that is the chromatic "meaning carrier" (e.g. a colored badge with white text), or the foreground text color otherwise
 4. Switching vision types while correction is on immediately re-scans the page
 5. The light/dark toggle in the popup header is cosmetic only (no page interaction)
